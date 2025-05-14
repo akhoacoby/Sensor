@@ -11,7 +11,13 @@
 #define System_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include <vector>
+#include <string>
 
+#include "Cleaner.h"
+#include "Measurement.h"
+#include "User.h"
+#include "Sensor.h"
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -22,7 +28,7 @@
 //
 //------------------------------------------------------------------------
 
-class System : public System
+class System
 {
 //----------------------------------------------------------------- PUBLIC
 
@@ -35,13 +41,13 @@ public:
     //
     void loadData();
 
-    bool analyzeSensor(char sensorId);
+    bool analyzeSensor(std::string sensorId);
 
-    double calculateMeanInArea (double lat, double lon, double rad, char start, char end, char attributeId );
+    double calculateMeanInArea (double lat, double lon, double rad, const std::string & start, const std::string & end, std::string attributeId );
 
-    double rankSimilarSensors(char sensorId, char start, char end, char timestamp, char attributeId);
+    double rankSimilarSensors(const std::string & sensorId, const std::string & start, const std::string & end, const std::string & timestamp, std::string attributeId);
 
-    void evaluateSensorReliability(char sensorId);
+    void evaluateSensorReliability(const std::string & sensorId);
 
 //-------------------------------------------- Constructeurs - destructeur
     System ( );
@@ -62,10 +68,10 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-    vector<Sensor> list_sensors;
-    vector<User> list_users;
-    vector<Measurement> list_measurements;
-    vector<Cleaner> list_cleaners;
+    std::vector<Sensor> list_sensors;
+    std::vector<User> list_users;
+    std::vector<Measurement> list_measurements;
+    std::vector<Cleaner> list_cleaners;
 };
 
 //-------------------------------- Autres définitions dépendantes de <System>
