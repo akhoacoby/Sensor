@@ -36,7 +36,7 @@ public:
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-    Cleaner & operator = ( const Cleaner & unCleaner );
+ 
     // Mode d'emploi :
     //
     // Contrat :
@@ -64,10 +64,13 @@ public:
 
 //------------------------------------------------------------------ PRIVE
 
-protected:
-//----------------------------------------------------- Méthodes protégées
+private:
+string cleanerId;
+double latitude;
+double longitude;
+time_t startTime;
+time_t stopTime;
 
-//----------------------------------------------------- Attributs protégés
 
 };
 
