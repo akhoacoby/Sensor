@@ -41,11 +41,11 @@ public:
     //
     void loadData();
 
-    bool analyzeSensor(std::string sensorId);
+    bool analyzeSensor(const std::string & sensorId);
 
     double calculateMeanInArea (double lat, double lon, double rad, const std::string & start, const std::string & end, std::string attributeId );
 
-    double rankSimilarSensors(const std::string & sensorId, const std::string & start, const std::string & end, const std::string & timestamp, std::string attributeId);
+    std::vector<pair<Sensor,int>> rankSimilarSensors(const std::string & sensorId, const std::string & start, const std::string & end, const std::string & timestamp, std::string attributeId);
 
     void evaluateSensorReliability(const std::string & sensorId);
 
