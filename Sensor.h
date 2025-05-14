@@ -1,77 +1,27 @@
-/*************************************************************************
-                           Xxx  -  description
-                             -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
-*************************************************************************/
+/**
+ * @name Sensor.h
+ * @date 2025.05.14
+ *
+ */
 
-//---------- Interface de la classe <Xxx> (fichier Xxx.h) ----------------
-#if ! defined ( XXX_H )
-#define XXX_H
+#ifndef _SENSOR_H
+#define _SENSOR_H
 
-//--------------------------------------------------- Interfaces utilisées
+#include <string>
+#include <vector>
+#include <utility>
 
-//------------------------------------------------------------- Constantes
+#include "Measurement.h"
+#include "Time.h"
 
-//------------------------------------------------------------------ Types
-
-//------------------------------------------------------------------------
-// Rôle de la classe <Xxx>
-//
-//
-//------------------------------------------------------------------------
-
-class Xxx : public Ancetre
+class Sensor
 {
-//----------------------------------------------------------------- PUBLIC
+private:
+    std::string sensorID;
+    double latitude;
+    double longitude;
 
 public:
-//----------------------------------------------------- Méthodes publiques
-    // type Méthode ( liste des paramètres );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-
-//------------------------------------------------- Surcharge d'opérateurs
-    Xxx & operator = ( const Xxx & unXxx );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-
-//-------------------------------------------- Constructeurs - destructeur
-    Xxx ( const Xxx & unXxx );
-    // Mode d'emploi (constructeur de copie) :
-    //
-    // Contrat :
-    //
-
-    Xxx ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-    virtual ~Xxx ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-//------------------------------------------------------------------ PRIVE
-
-protected:
-//----------------------------------------------------- Méthodes protégées
-
-//----------------------------------------------------- Attributs protégés
-
-};
-
-//-------------------------------- Autres définitions dépendantes de <Xxx>
-
-#endif // XXX_H
-
+    std::pair<double, double> get_coord_gps();
+    std::vector<Measurement> get_measurements(Time debut);
+}
