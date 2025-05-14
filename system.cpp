@@ -13,7 +13,6 @@
 using namespace std;
 #include <iostream>
 #include <ctime>
-#include <vector>
 //------------------------------------------------------ Include personnel
 #include "System.h"
 
