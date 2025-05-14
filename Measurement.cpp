@@ -1,28 +1,28 @@
 /*************************************************************************
-                           -  description
+                           Xxx  -  description
                              -------------------
-    début                : $14/5/2025$
-    copyright            : (C) $2025$ par $KHOA, MALAK, NATHAN, ELISE, $
+    début                : $DATE$
+    copyright            : (C) $YEAR$ par $AUTHOR$
+    e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Réalisation de la classe <system> (fichier system.cpp) ------------
+//---------- Réalisation de la classe <Xxx> (fichier Xxx.cpp) ------------
 
 //---------------------------------------------------------------- INCLUDE
 
 //-------------------------------------------------------- Include système
 using namespace std;
 #include <iostream>
-#include <ctime>
-#include <vector>
+
 //------------------------------------------------------ Include personnel
-#include "System.h"
+#include "Xxx.h"
 
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-// type System::Méthode ( liste des paramètres )
+// type Xxx::Méthode ( liste des paramètres )
 // Algorithme :
 //
 //{
@@ -30,7 +30,7 @@ using namespace std;
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-System & System::operator = ( const System & unSystem )
+Xxx & Xxx::operator = ( const Xxx & unXxx )
 // Algorithme :
 //
 {
@@ -38,34 +38,34 @@ System & System::operator = ( const System & unSystem )
 
 
 //-------------------------------------------- Constructeurs - destructeur
-System::System ( const System & unSystem )
+Xxx::Xxx ( const Xxx & unXxx )
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au constructeur de copie de <System>" << endl;
+    cout << "Appel au constructeur de copie de <Xxx>" << endl;
 #endif
-} //----- Fin de System (constructeur de copie)
+} //----- Fin de Xxx (constructeur de copie)
 
 
-System::System ( )
+Xxx::Xxx ( )
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au constructeur de <System>" << endl;
+    cout << "Appel au constructeur de <Xxx>" << endl;
 #endif
-} //----- Fin de System
+} //----- Fin de Xxx
 
 
-System::~System ( )
+Xxx::~Xxx ( )
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au destructeur de <System>" << endl;
+    cout << "Appel au destructeur de <Xxx>" << endl;
 #endif
-} //----- Fin de ~System
+} //----- Fin de ~Xxx
 
 
 //------------------------------------------------------------------ PRIVE
