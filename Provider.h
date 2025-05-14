@@ -1,28 +1,31 @@
 /*************************************************************************
-                           Measurement  -  description
+                           Provider  -  description
                              -------------------
     début                : $DATE$
     copyright            : (C) $YEAR$ par $AUTHOR$
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Interface de la classe <Measurement> (fichier Measurement.h) ----------------
-#if ! defined ( Measurement_H )
-#define Measurement_H
+//---------- Interface de la classe <Provider> (fichier Provider.h) ----------------
+#if ! defined ( Provider_H )
+#define Provider_H
 
 //--------------------------------------------------- Interfaces utilisées
-
+#include <vector>
+#include "Cleaner.h"
+#include <string>
+#include <unordered_map>
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <Measurement>
+// Rôle de la classe <Provider>
 //
 //
 //------------------------------------------------------------------------
 
-class Measurement
+class Provider
 {
 //----------------------------------------------------------------- PUBLIC
 
@@ -33,30 +36,17 @@ public:
     //
     // Contrat :
     //
-
-
-//------------------------------------------------- Surcharge d'opérateurs
-    Measurement & operator = ( const Measurement & unMeasurement );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
+    void AddCleaner(const std::string & cleanerid);
+    static Provider& GetOrCreate(std::string providerId,std::unordered_map<std::string, Provider>& providerMap);
+    
 
 //-------------------------------------------- Constructeurs - destructeur
-    Measurement ( const Measurement & unMeasurement );
-    // Mode d'emploi (constructeur de copie) :
+Provider(std::string providerId);    // Mode d'emploi :
     //
     // Contrat :
     //
 
-    Measurement ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-    virtual ~Measurement ( );
+    virtual ~Provider ( );
     // Mode d'emploi :
     //
     // Contrat :
@@ -66,12 +56,13 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-
+    std::string providerId;
+    std::vector<std::string> cleaners_own;
 //----------------------------------------------------- Attributs protégés
 
 };
 
-//-------------------------------- Autres définitions dépendantes de <Measurement>
+//-------------------------------- Autres définitions dépendantes de <Provider>
 
-#endif // Measurement_H
+#endif // Provider_H
 
