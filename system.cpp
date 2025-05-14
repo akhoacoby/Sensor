@@ -1,6 +1,3 @@
-using namespace std;
-#include <iostream>
-#include <ctime>
 #include "System.h"
 
 //----------------------------------------------------- Constructeur
