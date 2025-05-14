@@ -13,6 +13,7 @@
 // SYSTEM INCLUDES 
 #include <string>
 #include <ostream>
+#include <cstdio>
 using namespace std;
 
 // USED TYPES
@@ -22,9 +23,7 @@ class Time {
     public:
         // CONSTRUCTORS
         Time(); 
-        Time(unsigned int day, int month, int year,
-         unsigned int hour, unsigned int minute, unsigned int second,
-         int zone);
+        Time(const string& time_str);
         virtual ~Time();
 
         // GETTERS 
@@ -34,7 +33,7 @@ class Time {
         unsigned int getHour() const;
         unsigned int getMinute() const;
         unsigned int getSecond() const;
-        int getTimeZone() const;
+        double getTimeZone() const;
 
         // SETTERS
         void setDay(unsigned int day);
@@ -43,7 +42,7 @@ class Time {
         void setHour(unsigned int hour);
         void setMinute(unsigned int minute);
         void setSecond(unsigned int second);
-        void setTimeZone(int zone);
+        void setTimeZone(double zone);
         
     private:
         // PRIVATE ATTRIBUTES
@@ -53,7 +52,7 @@ class Time {
         unsigned int hour;
         unsigned int minute;
         unsigned int second;
-        int zone;
+        double zone;
 };
 
 #endif // TIME_H
