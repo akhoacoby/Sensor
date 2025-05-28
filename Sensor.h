@@ -12,17 +12,31 @@
 #include <vector>
 #include <utility>
 
-#include "Measurement.h"
+#include "measurement.h"
 #include "Time.h"
+using namespace std;
 
-class Sensor
-{
+class Sensor {
 private:
-    std::string sensorID;
+    string sensorID;
     double latitude;
     double longitude;
 
 public:
-    std::pair<double, double> get_coord_gps();
-    std::vector<Measurement> get_measurements(Time debut);
-}
+    
+    string get_sensorID() const;
+    double get_lat() const;
+    double get_long() const;
+
+    pair<double, double> get_coord_gps();
+    vector<Measurement> get_measurements(vector<Measurement> list_measurement, Time debut);
+
+    //Constructor
+    Sensor();
+    Sensor(const string& sensor_str);
+    
+    //Destructor
+    virtual ~Sensor();
+};
+
+#endif //SENSOR_H
