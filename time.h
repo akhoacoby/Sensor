@@ -33,7 +33,7 @@ class Time {
         unsigned int getHour() const;
         unsigned int getMinute() const;
         unsigned int getSecond() const;
-        double getTimeZone() const;
+        //double getTimeZone() const;
 
         // SETTERS
         void setDay(unsigned int day);
@@ -42,7 +42,7 @@ class Time {
         void setHour(unsigned int hour);
         void setMinute(unsigned int minute);
         void setSecond(unsigned int second);
-        void setTimeZone(double zone);
+        //void setTimeZone(double zone);
         
     private:
         // PRIVATE ATTRIBUTES
@@ -52,7 +52,7 @@ class Time {
         unsigned int hour;
         unsigned int minute;
         unsigned int second;
-        double zone;
+        //double zone;
 };
 
 #endif // TIME_H
