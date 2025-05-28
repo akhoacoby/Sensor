@@ -20,6 +20,23 @@ Csvfile::Csvfile(const string& filename) {
 Csvfile::~Csvfile() {}
 
 // PUBLIC METHODS
+
+void Csvfile::writeToFile(const string& filename) {
+    ofstream file(filename);
+    if (!file.is_open()) {
+        throw runtime_error("Cannot open the file " + filename);
+    }
+
+    for (const auto& attr : attributes) {
+        file << attr << "\t";
+    }
+    file << "\n";
+
+    for (const auto& line : values) {
+        file << line << "\n";
+    }
+};
+
 void Csvfile::loadFromFile(const string& filename) {
     ifstream file(filename);
     if (!file.is_open()) {
