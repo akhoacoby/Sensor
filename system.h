@@ -47,7 +47,7 @@ public:
 
     std::vector<pair<Sensor,int>> rankSimilarSensors(const std::string & sensorId, const std::string & start, const std::string & end, const std::string & timestamp, std::string attributeId);
 
-    void evaluateSensorReliability(const std::string & sensorId);
+    bool evaluateSensorReliability(const std::string & sensorId);
 
 //-------------------------------------------- Constructeurs - destructeur
     System ( );

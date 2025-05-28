@@ -42,6 +42,17 @@ double Sensor::get_long() const {
      return longitude;
 }
 
+void Sensor::setSensorId(string sensor_id){
+    this->sensorID = sensor_id;
+}
+void Sensor::setLatitude(double new_lat) {
+    this->latitude = new_lat;
+}
+void Sensor::setLongitude(double new_long) {
+    this->longitude = new_long;
+}
+
+
 Sensor::~Sensor() {
 }
 pair<double, double> Sensor::get_coord_gps()

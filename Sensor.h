@@ -28,6 +28,10 @@ public:
     double get_lat() const;
     double get_long() const;
 
+    void setSensorId(string sensor_id);
+    void setLatitude(double new_lat);
+    void setLongitude(double new_long);
+
     pair<double, double> get_coord_gps();
     vector<Measurement> get_measurements(vector<Measurement> list_measurement, Time debut);
 
