@@ -31,6 +31,7 @@ class Csvfile{
 
         //PUBLIC METHODS
         void loadFromFile(const string& filename);
+        void writeToFile(const string& filename);
         const vector<string>& getLines() const;
         const vector<string>& getHeader() const;
 
