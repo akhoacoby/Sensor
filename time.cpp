@@ -12,7 +12,7 @@
 
 Time::Time()
     : day(1), month(1), year(1970),
-      hour(0), minute(0), second(0), zone(0) {}
+      hour(0), minute(0), second(0) {}
 
 Time::Time(const string& time_str) {
     year   = std::stoi(time_str.substr(0, 4));
@@ -22,6 +22,7 @@ Time::Time(const string& time_str) {
     minute = std::stoi(time_str.substr(14, 2));
     second = std::stoi(time_str.substr(17, 2));
 
+    /*
     char sign = time_str[20];  // '+' or '-'
     int zone_hour   = std::stoi(time_str.substr(21, 2));
     int zone_minute = std::stoi(time_str.substr(24, 2));
@@ -30,6 +31,7 @@ Time::Time(const string& time_str) {
     if (sign == '-') {
         zone *= -1;
     }
+    */
 }
 
 
@@ -42,7 +44,7 @@ int Time::getYear() const { return year; }
 unsigned int Time::getHour() const { return hour; }
 unsigned int Time::getMinute() const { return minute; }
 unsigned int Time::getSecond() const { return second; }
-double Time::getTimeZone() const { return zone; }
+//double Time::getTimeZone() const { return zone; }
 
 // SETTERS
 void Time::setDay(unsigned int d) { day = d; }
@@ -51,10 +53,10 @@ void Time::setYear(int y) { year = y; }
 void Time::setHour(unsigned int h) { hour = h; }
 void Time::setMinute(unsigned int m) { minute = m; }
 void Time::setSecond(unsigned int s) { second = s; }
-void Time::setTimeZone(double z) { zone = z; }
+//void Time::setTimeZone(double z) { zone = z; }
 
 // << OPERATOR OVERRIDE
 ostream& operator<<(ostream& os, const Time t) {
-    os << t.year << "-" << t.month << "-" << t.day << " " << t.hour << ":" << t.minute << ":" << t.second << endl;
+    os << t.year << "-" << t.month << "-" << t.day << " " << t.hour << ":" << t.minute << ":" << t.second;
     return os;
 }
