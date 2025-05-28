@@ -10,6 +10,36 @@
 
 #include "time.h"
 
+
+    bool Time::operator==(const Time& other) const {
+        return year == other.year &&
+               month == other.month &&
+               day == other.day &&
+               hour == other.hour &&
+               minute == other.minute &&
+               second == other.second;
+    }
+
+    
+    bool Time::operator<(const Time& other) const {
+        if (year != other.year) return year < other.year;
+        if (month != other.month) return month < other.month;
+        if (day != other.day) return day < other.day;
+        if (hour != other.hour) return hour < other.hour;
+        if (minute != other.minute) return minute < other.minute;
+        return second < other.second;
+    }
+
+   
+    bool Time::operator<=(const Time& other) const {
+        return (*this < other) || (*this == other);
+    }
+
+
+    bool Time::operator>=(const Time& other) const {
+        return !(*this < other);
+    }
+
 Time::Time()
     : day(1), month(1), year(1970),
       hour(0), minute(0), second(0) {}

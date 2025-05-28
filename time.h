@@ -21,6 +21,17 @@ using namespace std;
 class Time {
     friend ostream& operator<<(ostream& os, const Time t);
     public:
+        // Overload operator==
+        bool operator==(const Time& other) const;
+
+        // Overload operator<
+        bool operator<(const Time& other) const;
+
+        // Overload operator<= using operator< and operator==
+        bool operator<=(const Time& other) const;
+
+        bool operator>=(const Time& other) const;
+
         // CONSTRUCTORS
         Time(); 
         Time(const string& time_str);
