@@ -17,6 +17,27 @@ System::~System()
 //----------------------------------------------------- Méthodes
 
 void System::loadData() {
+    // Chargement des sensors
+    Csvfile sensorFile("sensors.csv");
+    for (const string& line : sensorFile.getLines()) {
+        Sensor s(line);
+        list_sensors.push_back(s);
+    }
+
+    // Chargement des measurments
+    Csvfile measurementFile("measurements.csv");
+    for (const string& line : measurementFile.getLines()) {
+        Measurement m(line);
+        list_measurements.push_back(m);
+    }
+
+    // Chargement des cleaners
+    Csvfile cleanerFile("cleaners.csv");
+    for (const string& line : cleanerFile.getLines()) {
+        Cleaner c(line);
+        list_cleaners.push_back(c);
+    }
+
    
 }
 
