@@ -73,12 +73,64 @@ const std::string & end,std::string attributeId)
 
 }
 
-std::vector<pair<Sensor, int>> System::rankSimilarSensors(const std::string & sensorId,const std::string & start,
-const std::string & end,const std::string & timestamp, std::string attributeId)
-{
-    //  classement des capteurs
-    return;
+double pearsonCorrelation(const map<Time, double>& s1, const map<Time, double>& s2) {
+    vector<double> vals1, vals2;
+    
+    for (const auto& [time, val1] : s1) {
+        auto it = s2.find(time);
+        if (it != s2.end()) {
+            vals1.push_back(val1);
+            vals2.push_back(it->second);
+        }
+    }
+    if (vals1.size() < 2) return 0; // pas assez de points pour corrélation
+
+    double mean1 = accumulate(vals1.begin(), vals1.end(), 0.0) / vals1.size();
+    double mean2 = accumulate(vals2.begin(), vals2.end(), 0.0) / vals2.size();
+
+    double num = 0, denom1 = 0, denom2 = 0;
+    for (size_t i = 0; i < vals1.size(); i++) {
+        num += (vals1[i] - mean1) * (vals2[i] - mean2);
+        denom1 += (vals1[i] - mean1) * (vals1[i] - mean1);
+        denom2 += (vals2[i] - mean2) * (vals2[i] - mean2);
+    }
+
+    if (denom1 == 0 || denom2 == 0) return 0;
+
+    return num / sqrt(denom1 * denom2); // valeur entre -1 et 1
 }
+
+vector<pair<Sensor, double>> System::rankSimilarSensors(const string & sensorId,
+                                                       const string & start,
+                                                       const string & end,
+                                                       const string & timestamp,
+                                                       string attributeId) {
+    Time tStart(start);
+    Time tEnd(end);
+
+    auto refSeries = getMeasurements(sensorId, tStart, tEnd, attributeId);
+
+    vector<pair<Sensor, double>> rankedSensors;
+
+    for (const Sensor& s : list_sensors) {
+        if (s.getId() == sensorId) continue;
+
+        auto otherSeries = getMeasurements(s.getId(), tStart, tEnd, attributeId);
+
+        double corr = pearsonCorrelation(refSeries, otherSeries);
+        // Plus corr proche de 1 = plus similaire
+
+        rankedSensors.push_back({s, corr});
+    }
+
+    sort(rankedSensors.begin(), rankedSensors.end(),
+         [](const pair<Sensor, double>& a, const pair<Sensor, double>& b) {
+             return a.second > b.second; // tri décroissant par corrélation
+         });
+
+    return rankedSensors;
+}
+
 
 bool System::evaluateSensorReliability(const std::string & sensorId)
 {
