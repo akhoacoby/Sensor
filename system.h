@@ -45,6 +45,8 @@ public:
 
     double calculateMeanInArea (double lat, double lon, double rad, const std::string & start, const std::string & end, std::string attributeId );
 
+    double pearsonCorrelation(const vector<double>& x, const vector<double>& y);
+
     std::vector<pair<Sensor,int>> rankSimilarSensors(const std::string & sensorId, const std::string & start, const std::string & end, const std::string & timestamp, std::string attributeId);
 
     bool evaluateSensorReliability(const std::string & sensorId);
