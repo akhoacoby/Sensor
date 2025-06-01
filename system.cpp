@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <map>
 #include <set>
+#include <chrono>  
 
 #include "System.h"
 #include "Time.h"
@@ -12,6 +13,11 @@
 #include "Measurement.h"
 
 using namespace std;
+
+// Seuils pour annalyse
+const double maxIrregularRatio = 0.2;  
+const double minVariance = 0.1;         
+const double maxVariance = 100.0; 
 
 //----------------------------------------------------- Constructeur
 System::System()
@@ -53,10 +59,53 @@ void System::loadData() {
 }
 
 
-bool System::analyzeSensor(const std::string & sensorId)
-{
-    //  Analyse de capteur
+
+
+bool System::analyzeSensor(const std::string& sensorId) {
+    vector<Measurement> mesures = getMeasurementsForSensor(sensorId);
+    if (mesures.size() < 2) return false; // Pas assez de données pour analyse
+
+    // 1) Consistance temporelle
+    int irregularCount = 0;
+    int expectedInterval = 60; // 1 mesure par minute environ
+
+    for (size_t i = 1; i < mesures.size(); ++i) {
+        int interval = mesures[i].getTimeStamp().toSeconds() - mesures[i-1].getTimeStamp().toSeconds();
+
+        // tolérance +/- 30 secondes autour d'une minute
+        if (std::abs(interval - expectedInterval) > 30) {
+            irregularCount++;
+        }
+    }
+    double irregularRatio = double(irregularCount) / (mesures.size() - 1);
+
+    // 2) Variance des mesures 
+    double sum = 0.0, sumSq = 0.0;
+    for (const auto& m : mesures) {
+        double val = m.getValue();
+        sum += val;
+        sumSq += val * val;
+    }
+    double mean = sum / mesures.size();
+    double variance = (sumSq / mesures.size()) - (mean * mean);   
+
+    if (irregularRatio > maxIrregularRatio) {
+        // Capteur considéré non fiable pour irrégularité temporelle
+        cout << " Sensor " << sensorId << " flagged as UNRELIABLE!!!" << endl;
+        return false;
+    }
+
+    if (variance < minVariance || variance > maxVariance) {
+        // Capteur considéré non fiable pour variance anormale
+         cout << " Sensor " << sensorId << " flagged as UNRELIABLE!!!" << endl;
+        return false;
+    }
+
+    // Capteur semble fiable
+    cout << " Sensor " << sensorId << " is reliable" << endl;
+    return true;
 }
+
 
 double System::calculateMeanInArea(double lat, double lon, double rad,const std::string & start,
 const std::string & end,std::string attributeId)
@@ -109,11 +158,8 @@ double pearsonCorrelation(const vector<double>& x, const vector<double>& y) {
 }
 
 
-vector<pair<Sensor, double>> System::rankSimilarSensors(const string& sensorId,
-                                                        const string& start,
-                                                        const string& end,
-                                                        const string& timestamp,
-                                                        string attributeId) {
+vector<pair<Sensor, double>> System::rankSimilarSensors(const string& sensorId, const string& start, const string& end,
+const string& timestamp, string attributeId) {
     Time tStart(start);
     Time tEnd(end);
     vector<pair<Sensor, double>> rankedSensors;
