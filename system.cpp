@@ -1,6 +1,16 @@
+#include <vector>
+#include <string>
+#include <cmath>
+#include <numeric>
+#include <algorithm>
+#include <map>
+
 #include "System.h"
-#include "csvfile.h"
-#include "sensors.h"
+#include "Time.h"
+#include "Sensor.h"
+#include "Measurement.h"
+
+using namespace std;
 
 //----------------------------------------------------- Constructeur
 System::System()
@@ -73,64 +83,92 @@ const std::string & end,std::string attributeId)
 
 }
 
-double pearsonCorrelation(const map<Time, double>& s1, const map<Time, double>& s2) {
-    vector<double> vals1, vals2;
-    
-    for (const auto& [time, val1] : s1) {
-        auto it = s2.find(time);
-        if (it != s2.end()) {
-            vals1.push_back(val1);
-            vals2.push_back(it->second);
-        }
-    }
-    if (vals1.size() < 2) return 0; // pas assez de points pour corrélation
 
-    double mean1 = accumulate(vals1.begin(), vals1.end(), 0.0) / vals1.size();
-    double mean2 = accumulate(vals2.begin(), vals2.end(), 0.0) / vals2.size();
+double pearsonCorrelation(const vector<double>& x, const vector<double>& y) {
+    if (x.size() != y.size() || x.empty()) return 0.0;
 
-    double num = 0, denom1 = 0, denom2 = 0;
-    for (size_t i = 0; i < vals1.size(); i++) {
-        num += (vals1[i] - mean1) * (vals2[i] - mean2);
-        denom1 += (vals1[i] - mean1) * (vals1[i] - mean1);
-        denom2 += (vals2[i] - mean2) * (vals2[i] - mean2);
+    double meanX = accumulate(x.begin(), x.end(), 0.0) / x.size();
+    double meanY = accumulate(y.begin(), y.end(), 0.0) / y.size();
+
+    double numerator = 0.0;
+    double denomX = 0.0;
+    double denomY = 0.0;
+
+    for (size_t i = 0; i < x.size(); ++i) {
+        double dx = x[i] - meanX;
+        double dy = y[i] - meanY;
+        numerator += dx * dy;
+        denomX += dx * dx;
+        denomY += dy * dy;
     }
 
-    if (denom1 == 0 || denom2 == 0) return 0;
+    if (denomX == 0.0 || denomY == 0.0) return 0.0;
 
-    return num / sqrt(denom1 * denom2); // valeur entre -1 et 1
+    return numerator / sqrt(denomX * denomY);
 }
 
-vector<pair<Sensor, double>> System::rankSimilarSensors(const string & sensorId,
-                                                       const string & start,
-                                                       const string & end,
-                                                       const string & timestamp,
-                                                       string attributeId) {
+
+vector<pair<Sensor, double>> System::rankSimilarSensors(const string& sensorId,
+                                                        const string& start,
+                                                        const string& end,
+                                                        const string& timestamp,
+                                                        string attributeId) {
     Time tStart(start);
     Time tEnd(end);
-
-    auto refSeries = getMeasurements(sensorId, tStart, tEnd, attributeId);
-
     vector<pair<Sensor, double>> rankedSensors;
 
-    for (const Sensor& s : list_sensors) {
-        if (s.getId() == sensorId) continue;
+    // Trouver le capteur de référence
+    Sensor* refSensor = nullptr;
+    for (Sensor& s : list_sensors) {
+        if (s.get_sensorID() == sensorId) {
+            refSensor = &s;
+            break;
+        }
+    }
+    if (!refSensor) return rankedSensors;
 
-        auto otherSeries = getMeasurements(s.getId(), tStart, tEnd, attributeId);
+    // Récupérer les mesures de référence
+    vector<Measurement> refMeasurements = refSensor->get_measurements(list_measurements, tStart);
+    vector<double> refValues;
 
-        double corr = pearsonCorrelation(refSeries, otherSeries);
-        // Plus corr proche de 1 = plus similaire
-
-        rankedSensors.push_back({s, corr});
+    for (const Measurement& m : refMeasurements) {
+        if (m.getTimeStamp() <= tEnd && m.getAttribute_id() == attributeId) {
+            refValues.push_back(m.getValue());
+        }
     }
 
+    // Comparer avec les autres capteurs
+    for (const Sensor& s : list_sensors) {
+        if (s.get_sensorID() == sensorId) continue;
+
+        vector<Measurement> otherMeasurements = s.get_measurements(list_measurements, tStart);
+        vector<double> otherValues;
+
+        for (const Measurement& m : otherMeasurements) {
+            if (m.getTimeStamp() <= tEnd && m.getAttribute_id() == attributeId) {
+                otherValues.push_back(m.getValue());
+            }
+        }
+
+        // Assurer une comparaison sur une base commune (même taille)
+        size_t minSize = min(refValues.size(), otherValues.size());
+        if (minSize < 10) continue; // trop peu de points en commun, skip
+
+        vector<double> x(refValues.begin(), refValues.begin() + minSize);
+        vector<double> y(otherValues.begin(), otherValues.begin() + minSize);
+
+        double similarity = pearsonCorrelation(x, y);
+        rankedSensors.push_back({s, similarity});
+    }
+
+    // Trier du plus similaire au moins similaire
     sort(rankedSensors.begin(), rankedSensors.end(),
-         [](const pair<Sensor, double>& a, const pair<Sensor, double>& b) {
-             return a.second > b.second; // tri décroissant par corrélation
-         });
+        [](const pair<Sensor, double>& a, const pair<Sensor, double>& b) {
+            return a.second > b.second;
+        });
 
     return rankedSensors;
 }
-
 
 bool System::evaluateSensorReliability(const std::string & sensorId)
 {
