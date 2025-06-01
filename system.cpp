@@ -4,6 +4,7 @@
 #include <numeric>
 #include <algorithm>
 #include <map>
+#include <set>
 
 #include "System.h"
 #include "Time.h"
@@ -170,9 +171,97 @@ vector<pair<Sensor, double>> System::rankSimilarSensors(const string& sensorId,
     return rankedSensors;
 }
 
-bool System::evaluateSensorReliability(const std::string & sensorId)
-{
-    // évaluation de fiabilité
+
+
+// Fonction  pour calculer la distance 
+double computeDistance(double lat1, double lon1, double lat2, double lon2) {
+    double dx = lat1 - lat2;
+    double dy = lon1 - lon2;
+    return sqrt(dx * dx + dy * dy) * 111; 
+}
+
+bool System::evaluateSensorReliability(const string& sensorId, double radius, const string& start, const string& end) {
+    Time tStart(start);
+    Time tEnd(end);
+
+    // 1) Trouver le capteur cible
+    Sensor* targetSensor = nullptr;
+    for (Sensor& s : list_sensors) {
+        if (s.get_sensorID() == sensorId) {
+            targetSensor = &s;
+            break;
+        }
+    }
+    if (!targetSensor) return false; // Capteur inconnu
+
+    double lat = targetSensor->get_lat();
+    double lon = targetSensor->get_long();
+
+    // 2) Trouver les capteurs voisins dans un rayon donné
+    vector<Sensor> neighbors;
+    for (const Sensor& s : list_sensors) {
+        if (s.get_sensorID() == sensorId) continue;
+        double d = computeDistance(lat, lon, s.get_lat(), s.get_long());
+        if (d <= radius) {
+            neighbors.push_back(s);
+        }
+    }
+
+    if (neighbors.empty()) return true; // Pas de comparaison possible → considérer comme fiable
+
+    // 3) Extraire les mesures du capteur cible
+    vector<Measurement> targetMeasurements = targetSensor->get_measurements(list_measurements, tStart);
+    map<string, vector<double>> targetValues; // attributeId → valeurs
+
+    for (const Measurement& m : targetMeasurements) {
+        if (m.getTimeStamp() <= tEnd) {
+            targetValues[m.getAttribute_id()].push_back(m.getValue());
+        }
+    }
+
+    // 4) Comparer avec les moyennes des voisins
+    for (const auto& [attribute, tVals] : targetValues) {
+        if (tVals.empty()) continue;
+
+        // Moyennes des voisins
+        vector<double> neighborAverages;
+        for (const Sensor& neighbor : neighbors) {
+            vector<Measurement> neighborMeas = neighbor.get_measurements(list_measurements, tStart);
+            vector<double> values;
+
+            for (const Measurement& m : neighborMeas) {
+                if (m.getTimeStamp() <= tEnd && m.getAttribute_id() == attribute) {
+                    values.push_back(m.getValue());
+                }
+            }
+
+            if (!values.empty()) {
+                double sum = accumulate(values.begin(), values.end(), 0.0);
+                neighborAverages.push_back(sum / values.size());
+            }
+        }
+
+        if (neighborAverages.empty()) continue;
+
+        // Moyenne et écart-type des voisins
+        double mean = accumulate(neighborAverages.begin(), neighborAverages.end(), 0.0) / neighborAverages.size();
+        double variance = 0.0;
+        for (double val : neighborAverages) {
+            variance += (val - mean) * (val - mean);
+        }
+        variance /= neighborAverages.size();
+        double stdDev = sqrt(variance);
+
+        // Moyenne des valeurs du capteur cible
+        double targetMean = accumulate(tVals.begin(), tVals.end(), 0.0) / tVals.size();
+
+        // Si l'écart dépasse 2 fois l'écart-type alors suspect
+        if (fabs(targetMean - mean) > 2 * stdDev) {
+            return false; 
+        }
+    }
+
+    return true; 
 }
 
 
