@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rank Similar Sensors</title>
+</head>
+<body>
+    <h1>Rank Similar Sensors</h1>
+    <p><strong>Function:</strong> <code>vector&lt;pair&lt;Sensor, double&gt;&gt; rankSimilarSensors(sensorId, start, end, timestamp, attributeId)</code></p>
+
+    <h2>Description</h2>
+    <p>Ranks other sensors by similarity to a reference sensor's measurements using Pearson correlation.</p>
+
+    <h2>Parameters</h2>
+    <ul>
+        <li><code>sensorId</code>: ID of the reference sensor.</li>
+        <li><code>start</code>: Start time in ISO format (e.g., <code>"2024-04-01 00:00:00"</code>).</li>
+        <li><code>end</code>: End time (same format).</li>
+        <li><code>timestamp</code>: [Unused] Reserved parameter, can be removed or clarified.</li>
+        <li><code>attributeId</code>: Type of measurement (e.g., <code>"O3"</code>, <code>"PM10"</code>).</li>
+    </ul>
+
+    <h2>Auxiliary Functions Used</h2>
+    <ul>
+        <li><code>pearsonCorrelation(x, y)</code>: Computes similarity between vectors.</li>
+        <p>
+The Pearson correlation coefficient is a statistical measure that evaluates the linear relationship between two
+datasets. It produces a value between -1 and 1: a value close to 1 indicates a strong positive correlation, -1 
+a strong negative correlation, and 0 no correlation. In our system, it is used to compare sensor measurements
+over time. A high correlation suggests that sensors are behaving similarly, helping assess their reliability.
+</p>
+
+    </ul>
+
+    <h2>Output</h2>
+    <p>A sorted list of sensors and their similarity score to the reference (from most to least similar).</p>
+
+    <p><a href="manual.html">⬅ Back to the user manual</a></p>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculate Mean in Area</title>
+</head>
+<body>
+    <h1>Calculate Mean in Area</h1>
+    <p><strong>Function:</strong> <code>double calculateMeanInArea(lat, lon, radius, start, end, attributeId)</code></p>
+
+    <h2>Description</h2>
+    <p>Calculates the average pollutant value in a geographic region within a time range.</p>
+
+    <h2>Parameters</h2>
+    <ul>
+        <li><code>lat</code>, <code>lon</code>: Coordinates of the center point.</li>
+        <li><code>radius</code>: Maximum distance from center to include sensors (approx. in degrees).</li>
+        <li><code>start</code>, <code>end</code>: Time range to filter measurements.</li>
+        <li><code>attributeId</code>: Target attribute (e.g., <code>"NO2"</code>).</li>
+    </ul>
+
+    <h2>Auxiliary Functions Used</h2>
+    <ul>
+        <li>Inline distance calculation using <code>sqrt(dx² + dy²)</code>.</li>
+    </ul>
+
+    <h2>Output</h2>
+    <p>Returns the average of all valid values. Returns <code>-1</code> if no valid measurements.</p>
+
+    <p><a href="manual.html">⬅ Back to the user manual</a></p>
+</body>
+</html>
