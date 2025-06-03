@@ -27,7 +27,7 @@ void GovernmentUser ::Afficher(void) const
     cout<<"Nom : "<<lastName<<" Prénom : "<<firstName<<" Mail : "<<mail<<endl;
 } //----- Fin de Afficher
 
-int GovernmentUser::Verify_pw(string mdp)
+int GovernmentUser::Verify_pw(const string& mdp)
 {
     if (mdp==password){
         return 0;

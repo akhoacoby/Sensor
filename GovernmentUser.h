@@ -31,7 +31,7 @@ public:
     // Mode d'emploi :
     //      Affiche le nom, le prénom et le mail du GovernmentUser
 
-    int Verify_pw(string mdp);
+    int Verify_pw(const string& mdp) override;
     // Mode d'emploi :
     //      verifie si le mot de passe donné en entrée correspond au mot de passe. renvoie 0 si ils correspondent, 1 sinon.
 

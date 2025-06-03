@@ -20,31 +20,31 @@ int main() {
     // -------- Test 1: Jean-Charles and Stevenson --------
     printDivider("Test 1: Jean-Charles and Stevenson Workflow");
 
-    auto jc = new GovernmentUser("jeancharles", "pw123", "Jean", "Charles", "jc@gov.fr");
-    auto steve = new ProviderUser("stevenson", "pw456", "Steve", "Stevenson", "steve@provider.com");
+    auto jc = std::make_unique<GovernmentUser>("jeancharles", "pw123", "Jean", "Charles", "jc@gov.fr");
+    auto steve = std::make_unique<ProviderUser>("stevenson", "pw456", "Steve", "Stevenson", "steve@provider.com");
 
-    system.createAccount(jc);
-    system.createAccount(steve);
+    system.addUser(move(jc));
+    system.addUser(move(steve));
 
-    cout << "[LOGIN] Jean-Charles logs in: " << (system.verifyLogin("jeancharles", "pw123") ? "Success" : "Fail") << endl;
-    cout << "[LOGIN] Stevenson logs in: " << (system.verifyLogin("stevenson", "pw456") ? "Success" : "Fail") << endl;
+    cout << "[LOGIN] Jean-Charles logs in: " << (jc->Verify_pw("pw123") ? "Success" : "Fail") << endl;
+    cout << "[LOGIN] Stevenson logs in: " << (steve->Verify_pw("pw456") ? "Success" : "Fail") << endl;
 
-    string sensorId = "Rbx-001";
-    cout << "[CHECK] Analyzing Roubaix sensor (Rbx-001):\n";
+    string sensorId = "Sensor0";
+    cout << "[CHECK] Analyzing Roubaix sensor (Sensor0):\n";
     system.analyzeSensor(sensorId);
 
     cout << "[COMPARE] Comparing similar sensors in Roubaix:\n";
     auto similarSensors = system.rankSimilarSensors(sensorId, "2024-06-01 12:00:00", "2024-06-01 18:00:00", "PM10");
     for (const auto& [sensor, similarity] : similarSensors) {
-        cout << " - " << sensor.getId() << ": Similarity = " << similarity << endl;
+        cout << " - " << sensor.get_sensorID() << ": Similarity = " << similarity << endl;
     }
 
     // -------- Test 2: Stevenson changes password and compares stats --------
     printDivider("Test 2: Stevenson Changes Password and Analyzes Stats");
 
-    system.changePassword("stevenson", "pw456", "newpass789");
+    steve->setPassword("newpass789");
     cout << "[PASSWORD] Password changed. Login with new password: " 
-         << (system.verifyLogin("stevenson", "newpass789") ? "Success" : "Fail") << endl;
+         << (steve->Verify_pw("newpass789") ? "Success" : "Fail") << endl;
 
     double todayStat = system.calculateMeanInArea(50.7, 3.2, 10, "2024-06-01 00:00:00", "2024-06-01 23:59:59", "PM10");
     double yesterdayStat = system.calculateMeanInArea(50.7, 3.2, 10, "2024-05-31 00:00:00", "2024-05-31 23:59:59", "PM10");
@@ -54,8 +54,8 @@ int main() {
     // -------- Test 3: Arnaud checks efficiency of air cleaners --------
     printDivider("Test 3: Arnaud checks sensors for Noisy (air cleaners)");
 
-    auto arnaud = new ProviderUser("arnaud", "airclean", "Arnaud", "Dupont", "arnaud@cleanair.com");
-    system.createAccount(arnaud);
+    auto arnaud = std::make_unique<ProviderUser>("arnaud", "airclean", "Arnaud", "Dupont", "arnaud@cleanair.com");
+    system.addUser(move(arnaud));
 
     vector<string> noisySensors = {"Noisy-001", "Noisy-002", "Noisy-003"};
     for (const string& id : noisySensors) {
@@ -71,7 +71,7 @@ int main() {
 
     if (!reliable) {
         cout << "[ALERT] Sensor " << fakeSensorId << " is UNRELIABLE. Marking user as unreliable.\n";
-        system.setUserAsUnreliable(fakeSensorId);  // suppose this function exists
+        //system.setUserAsUnreliable(fakeSensorId);  // suppose this function exists
     } else {
         cout << "[INFO] Sensor " << fakeSensorId << " seems reliable.\n";
     }

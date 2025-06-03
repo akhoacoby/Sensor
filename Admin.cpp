@@ -24,12 +24,12 @@ using namespace std;
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-void Admin ::Afficher(void) const
+void Admin::Afficher(void) const
 {
     cout<<"Nom : "<<lastName<<" Prénom : "<<firstName<<" Mail : "<<mail<<endl;
 } //----- Fin de Afficher
 
-int Admin::Verify_pw(string mdp)
+int Admin::Verify_pw(const string& mdp)
 {
     if (mdp==password){
         return 0;

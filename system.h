@@ -57,6 +57,8 @@ public:
     //
     void loadData();
 
+    bool addUser(std::unique_ptr<User> user);
+
     bool analyzeSensor(const std::string & sensorId);
 
     double calculateMeanInArea (double lat, double lon, double rad, const std::string & start, const std::string & end, std::string attributeId );
@@ -71,7 +73,7 @@ public:
 
     vector<Measurement> getMeasurementsForSensor(const string& sensorId) const;
 
-    //User getUserbyUsername(const string& userId) const;
+    User* getUserByUsername(const std::string& username);
 
 //-------------------------------------------- Constructeurs - destructeur
     System ( );
@@ -93,7 +95,7 @@ protected:
 
 //----------------------------------------------------- Attributs protégés
     std::vector<Sensor> list_sensors;
-    std::vector<User> list_users;
+    std::vector<std::unique_ptr<User>> list_users;
     std::vector<Measurement> list_measurements;
     std::vector<Cleaner> list_cleaners;
 };

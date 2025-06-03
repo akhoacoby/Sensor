@@ -36,14 +36,26 @@ void System::loadData() {
         list_cleaners.push_back(c);
     }
     // Chargement des users
-    // Csvfile userFile("users.csv");
-    // for (const string& line : userFile.getLines()) {
-    //     User u(line);
-    //     list_users.push_back(u);
-    // }
+    Csvfile userFile("users.csv");
+    for (const string& line : userFile.getLines()) {
+        unique_ptr<User> user = createUserFromLine(line);
+        if (user) {
+            list_users.push_back(std::move(user));
+        }
+    }       
 
 
+}
 
+
+bool System::addUser(std::unique_ptr<User> user) {
+    std::ofstream file("users.csv", std::ios::app); // Open in append mode
+    if (!file.is_open()) return false;
+
+    file << user->getId() << "," << user->getPassword() << "\n";
+    file.close();
+    list_users.push_back(user); // Also keep it in memory
+    return true;
 }
 
 vector<Measurement> System::getMeasurementsForSensor(const string& sensorId) const {
@@ -303,6 +315,16 @@ bool System::evaluateSensorReliability(const string& sensorId, double radius, co
 
     return true;
 }
+
+User* System::getUserByUsername(const std::string& username) {
+    for (const auto& userPtr : list_users) {
+        if (userPtr->getId() == username) {
+            return userPtr.get(); // return raw pointer, no ownership transfer
+        }
+    }
+    return nullptr; // not found
+}
+
 
 ostream& operator<<(std::ostream& os, const System& system) {
     os << "System data summary:\n";

@@ -53,15 +53,15 @@ int main(){
       cout << "What is your mail ?" << endl;
       cin >> mail;
 
-      User* to_create = nullptr;
+      std::unique_ptr<User> to_create;
       if (type == 1){
-        to_create = new GovernmentUser(username, password, firstname, name, mail);
+        to_create = std::make_unique<GovernmentUser>(username, password, firstname, name, mail);
       }
       else{
-        to_create = new ProviderUser(username, password, firstname, name, mail);
+        to_create = std::make_unique<ProviderUser>(username, password, firstname, name, mail);
       }
 
-      // system_manager.createAccount(to_create);
+      system_manager.addUser(std::move(to_create));
       //delete to_create;
     } else if (choice == 2) {
         string username;
@@ -73,7 +73,7 @@ int main(){
         cin >> password;
 
         cout << "Username: " << username << "\nPassword: " << password << endl; // TEST
-        // User to_log = system_manager.getUserByUsername(username);
+        User* to_log = system_manager.getUserByUsername(username);
         // bool connexion = to_log.Verify_pw(password);
         bool connexion = true; //en attendant
         if (connexion){

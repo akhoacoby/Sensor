@@ -12,6 +12,8 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <vector>
 using namespace std;
 //--------------------------------------------------- Interfaces utilisées
 
@@ -33,6 +35,8 @@ public:
 //----------------------------------------------------- Méthodes publiques
     virtual void Afficher () const = 0;
     virtual string getTrans () const = 0;
+    virtual int Verify_pw(const string& mdp);
+
 
     int getType () const;
     void setType (int typ);
@@ -73,5 +77,7 @@ string  mail;
 };
 
 //-------------------------------- Autres définitions dépendantes de <User>
+std::unique_ptr<User> createUserFromLine(const std::string& line);
+
 
 #endif // User_H

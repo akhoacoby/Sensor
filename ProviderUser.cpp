@@ -27,7 +27,7 @@ void ProviderUser ::Afficher(void) const
     cout<<"Nom : "<<lastName<<" Prénom : "<<firstName<<" Mail : "<<mail<<endl;
 } //----- Fin de Afficher
 
-int ProviderUser::Verify_pw(string mdp)
+int ProviderUser::Verify_pw(const string& mdp)
 {
     if (mdp==password){
         return 0;
