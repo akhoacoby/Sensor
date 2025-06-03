@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Air Quality Application – User Manual</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      padding: 40px;
+      max-width: 900px;
+      margin: auto;
+      background: #f9f9f9;
+      color: #2c3e50;
+    }
+    h1, h2, h3 {
+      color: #1a2c42;
+    }
+    code {
+      background: #eee;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    ul, ol {
+      margin-left: 20px;
+    }
+    .note {
+      font-style: italic;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌍 Air Quality Application – User Manual</h1>
+
+  <div class="section">
+    <h2>📖 Introduction</h2>
+    <p>Welcome to the <strong>Air Quality Monitoring Application</strong>, a command-line tool designed to help providers, government agencies, and administrators analyze and manage air pollution data through sensor networks.</p>
+    <p>This application provides interactive features for analyzing sensor data, comparing sensors, calculating mean pollutant levels in specific areas, and evaluating sensor reliability.</p>
+  </div>
+
+  <div class="section">
+    <h2>🚀 Getting Started</h2>
+    <p>When the application starts, users are welcomed and prompted with the following:</p>
+    <pre><code>Welcome to the Air Quality application.
+What do you want to do?
+1- Create an account
+2- Login</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>👥 User Roles</h2>
+    <ul>
+      <li><strong>Government Users</strong> – Can analyze public data and access sensor evaluations.</li>
+      <li><strong>Provider Users</strong> – Register and provide sensor data.</li>
+      <li><strong>Admin</strong> – Created internally (not via CLI); manages the system (not exposed in current menu).</li>
+    </ul>
+    <p class="note">Note: Private users cannot create accounts or access the app via this interface.</p>
+  </div>
+
+  <div class="section">
+    <h2>🔐 Account Management</h2>
+
+    <h3>1. Create an Account</h3>
+    <p>You will be asked whether you're a provider:</p>
+    <pre><code>Are you a provider? y/n</code></pre>
+    <p>Then you'll provide:</p>
+    <ul>
+      <li>Username</li>
+      <li>Password</li>
+      <li>Firstname</li>
+      <li>Lastname</li>
+      <li>Email</li>
+    </ul>
+    <p>Your account will be either a <strong>GovernmentUser</strong> or <strong>ProviderUser</strong>.</p>
+    <p><strong>Important:</strong> The account creation line in code (<code>system_manager.createAccount</code>) must be uncommented to activate account saving.</p>
+
+    <h3>2. Login</h3>
+    <p>Enter your username and password when prompted. Once logged in, a list of analysis options is displayed.</p>
+  </div>
+
+  <div class="section">
+    <h2>📊 Features & Functionalities</h2>
+
+    <p>After logging in, the following menu is available:</p>
+    <pre><code>
+1- Analyze a specific sensor values
+2- Calculate mean values in area
+3- Search similar sensors
+4- Calculate air quality improvement
+5- Evaluate sensor reliability
+6- Logout
+7- Help
+    </code></pre>
+
+    <h3>1️⃣ Analyze a Specific Sensor</h3>
+    <ul>
+      <li>Enter the sensor ID.</li>
+      <li>Optionally print all its measurement values.</li>
+      <li>View analysis results (e.g., pollutant stats).</li>
+    </ul>
+
+    <h3>2️⃣ Calculate Mean Values in Area</h3>
+    <p>Computes the mean concentration of a pollutant over a geographic region and time frame. You'll be asked to provide:</p>
+    <ul>
+      <li>Latitude, Longitude, Radius (km)</li>
+      <li>Start and End Date (<code>YYYY-MM-DD HH:MM:SS</code>)</li>
+      <li>Pollutant: <code>O3</code>, <code>NO2</code>, <code>SO2</code>, or <code>PM10</code></li>
+    </ul>
+
+    <h3>3️⃣ Search Similar Sensors</h3>
+    <p>Finds sensors whose readings are most similar to a target sensor for a pollutant and period.</p>
+
+    <h3>4️⃣ Calculate Air Quality Improvement</h3>
+    <p>This will eventually allow you to compare air quality before and after a certain time or event.</p>
+
+    <h3>5️⃣ Evaluate Sensor Reliability</h3>
+    <p>Checks whether a sensor's data is consistent with nearby sensors over time. You will enter:</p>
+    <ul>
+      <li>Sensor ID</li>
+      <li>Radius (km)</li>
+      <li>Start and End Date</li>
+    </ul>
+    <p>Returns whether the sensor is <strong>RELIABLE</strong> or <strong>UNRELIABLE</strong>.</p>
+
+    <h3>6️⃣ Logout</h3>
+    <p>Ends your session and returns to the login menu.</p>
+
+    <h3>7️⃣ Help</h3>
+    <p>Opens this user manual in your browser.</p>
+  </div>
+
+  <div class="section">
+    <h2>🧩 System Architecture (Backend Classes)</h2>
+    <ul>
+      <li><strong>System</strong>: Central class managing users, sensors, and logic.</li>
+      <li><strong>Sensor</strong>: Represents a sensor and its geographic position.</li>
+      <li><strong>Measurement</strong>: Represents one pollutant measurement.</li>
+      <li><strong>User</strong>, <strong>GovernmentUser</strong>, <strong>ProviderUser</strong>: Define user types and behavior.</li>
+      <li><strong>Csvfile</strong>: Handles CSV input/output.</li>
+      <li><strong>Time</strong>, <strong>Unit</strong>: Support for date parsing and unit processing.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>📝 Data Requirements</h2>
+    <ul>
+      <li>Sensor and measurement data must be loaded from files via <code>System::loadData()</code>.</li>
+      <li>Users must exist in the system (or be created) for login to work.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>📅 Date and Pollutant Format</h2>
+    <ul>
+      <li>Date format: <code>YYYY-MM-DD HH:MM:SS</code></li>
+      <li>Supported pollutants: <code>O3</code>, <code>NO2</code>, <code>SO2</code>, <code>PM10</code></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>✅ Future Improvements</h2>
+    <ul>
+      <li>Enable full user authentication and persistence.</li>
+      <li>Complete implementation of air quality improvement analysis.</li>
+      <li>GUI interface or web frontend.</li>
+      <li>Export analytics results (CSV, PDF, etc.).</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>📩 Support</h2>
+    <p>If you experience issues or bugs, please contact the system administrator or the development team responsible for the deployment.</p>
+  </div>
+
+</body>
+</html>
