@@ -37,6 +37,10 @@ int ProviderUser::Verify_pw(string mdp)
     }
 }//----- Fin de Verify_pw
 
+string ProviderUser::getTrans() const {
+    return "Provider";
+}
+
 //-------------------------------------------- Constructeurs - destructeur
 
 ProviderUser ::ProviderUser  (string Id, string Password, string FirstName, string LastName, string Mail)
@@ -51,7 +55,7 @@ ProviderUser ::ProviderUser  (string Id, string Password, string FirstName, stri
     #ifdef MAP
         cout << "Appel au constructeur de <ProviderUser >" << endl;
     #endif
-} //----- Fin de ProviderUser 
+} //----- Fin de ProviderUser
 
 ProviderUser ::ProviderUser  (string Password, string FirstName, string LastName, string Mail)
 {
@@ -64,7 +68,7 @@ ProviderUser ::ProviderUser  (string Password, string FirstName, string LastName
     #ifdef MAP
         cout << "Appel au constructeur de <ProviderUser >" << endl;
     #endif
-} //----- Fin de ProviderUser 
+} //----- Fin de ProviderUser
 
 
 

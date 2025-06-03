@@ -1,28 +1,9 @@
-#include <vector>
-#include <string>
-#include <cmath>
-#include <numeric>
-#include <algorithm>
-#include <map>
-#include <set>
-#include <chrono>  
-
 #include "System.h"
-#include "Time.h"
-#include "Sensor.h"
-#include "Measurement.h"
-
-using namespace std;
-
-// Seuils pour annalyse
-const double maxIrregularRatio = 0.2;  
-const double minVariance = 0.1;         
-const double maxVariance = 100.0; 
 
 //----------------------------------------------------- Constructeur
 System::System()
 {
-    
+
 }
 
 //----------------------------------------------------- Destructeur
@@ -54,12 +35,26 @@ void System::loadData() {
         Cleaner c(line);
         list_cleaners.push_back(c);
     }
+    // Chargement des users
+    // Csvfile userFile("users.csv");
+    // for (const string& line : userFile.getLines()) {
+    //     User u(line);
+    //     list_users.push_back(u);
+    // }
 
-   
+
+
 }
 
-
-
+vector<Measurement> System::getMeasurementsForSensor(const string& sensorId) const {
+    vector<Measurement> result;
+    for (const auto& m : list_measurements) {
+        if (m.getSensor_id() == sensorId) {
+            result.push_back(m);
+        }
+    }
+    return result;
+}
 
 bool System::analyzeSensor(const std::string& sensorId) {
     vector<Measurement> mesures = getMeasurementsForSensor(sensorId);
@@ -79,7 +74,7 @@ bool System::analyzeSensor(const std::string& sensorId) {
     }
     double irregularRatio = double(irregularCount) / (mesures.size() - 1);
 
-    // 2) Variance des mesures 
+    // 2) Variance des mesures
     double sum = 0.0, sumSq = 0.0;
     for (const auto& m : mesures) {
         double val = m.getValue();
@@ -87,7 +82,7 @@ bool System::analyzeSensor(const std::string& sensorId) {
         sumSq += val * val;
     }
     double mean = sum / mesures.size();
-    double variance = (sumSq / mesures.size()) - (mean * mean);   
+    double variance = (sumSq / mesures.size()) - (mean * mean);
 
     if (irregularRatio > maxIrregularRatio) {
         // Capteur considéré non fiable pour irrégularité temporelle
@@ -134,7 +129,7 @@ const std::string & end,std::string attributeId)
 }
 
 
-double pearsonCorrelation(const vector<double>& x, const vector<double>& y) {
+double System::pearsonCorrelation(const vector<double>& x, const vector<double>& y) const{
     if (x.size() != y.size() || x.empty()) return 0.0;
 
     double meanX = accumulate(x.begin(), x.end(), 0.0) / x.size();
@@ -158,8 +153,7 @@ double pearsonCorrelation(const vector<double>& x, const vector<double>& y) {
 }
 
 
-vector<pair<Sensor, double>> System::rankSimilarSensors(const string& sensorId, const string& start, const string& end,
-const string& timestamp, string attributeId) {
+vector<pair<Sensor, double>> System::rankSimilarSensors(const string& sensorId, const string& start, const string& end, string attributeId) {
     Time tStart(start);
     Time tEnd(end);
     vector<pair<Sensor, double>> rankedSensors;
@@ -219,11 +213,11 @@ const string& timestamp, string attributeId) {
 
 
 
-// Fonction  pour calculer la distance 
-double computeDistance(double lat1, double lon1, double lat2, double lon2) {
+// Fonction  pour calculer la distance
+double System::computeDistance(double lat1, double lon1, double lat2, double lon2) {
     double dx = lat1 - lat2;
     double dy = lon1 - lon2;
-    return sqrt(dx * dx + dy * dy) * 111; 
+    return sqrt(dx * dx + dy * dy) * 111;
 }
 
 bool System::evaluateSensorReliability(const string& sensorId, double radius, const string& start, const string& end) {
@@ -303,11 +297,20 @@ bool System::evaluateSensorReliability(const string& sensorId, double radius, co
 
         // Si l'écart dépasse 2 fois l'écart-type alors suspect
         if (fabs(targetMean - mean) > 2 * stdDev) {
-            return false; 
+            return false;
         }
     }
 
-    return true; 
+    return true;
+}
+
+ostream& operator<<(std::ostream& os, const System& system) {
+    os << "System data summary:\n";
+    os << "  Sensors: " << system.list_sensors.size() << "\n";
+    os << "  Users: " << system.list_users.size() << "\n";
+    os << "  Measurements: " << system.list_measurements.size() << "\n";
+    os << "  Cleaners: " << system.list_cleaners.size() << "\n";
+    return os;
 }
 
 
@@ -315,4 +318,3 @@ bool System::evaluateSensorReliability(const string& sensorId, double radius, co
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
-

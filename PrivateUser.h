@@ -11,6 +11,7 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include "User.h"
+#include "Cleaner.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -19,7 +20,7 @@
 //------------------------------------------------------------------------
 // Rôle de la classe <PrivateUser>
 //      Classe qui permet de construire, cloner et afficher Les PrivateUser (utilisateurs particuliers)
-//------------------------------------------------------------------------ 
+//------------------------------------------------------------------------
 
 class PrivateUser : public User
 {
@@ -34,6 +35,7 @@ public:
     virtual int getScore(void) const;
     virtual void setScore(int nouveau);
     void ChangerScore(int add);
+    string getTrans() const override;
 
 //-------------------------------------------- Constructeurs - destructeur
 
@@ -50,7 +52,7 @@ protected:
 
 //----------------------------------------------------- Attributs protégés
 int score;
-Aircleaner* liste_airCleaner;
+Cleaner* liste_airCleaner;
 };
 
 //-------------------------------- Autres définitions dépendantes de <PrivateUser>

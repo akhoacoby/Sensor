@@ -48,8 +48,6 @@ public:
     string  getMail () const;
     void setMail (string nMail);
 
-    virtual User* clone() const = 0;
-
 
 //-------------------------------------------- Constructeurs - destructeur
 
@@ -59,7 +57,7 @@ public:
 
 protected:
 
-User (); 
+User ();
     // Mode d'emploi :
     //      Constructeur protégé car classe abstraite
 
@@ -77,4 +75,3 @@ string  mail;
 //-------------------------------- Autres définitions dépendantes de <User>
 
 #endif // User_H
-

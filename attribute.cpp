@@ -1,5 +1,5 @@
 /*************************************************************************
-                                Attribute 
+                                Attribute
                              -------------------
     beginning            : 2025
     copyright            : (C) 2025 by BACHET, LEBRE, BAHDA, BUI and BAGINSKI
@@ -8,7 +8,7 @@
 
 //---------- Class <Attribute> realization (file Attribute.cpp) ------------
 
-#include "attribute.h"
+#include "Attribute.h"
 
 // CONSTRUCTORS
 Attribute::Attribute(){

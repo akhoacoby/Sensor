@@ -32,6 +32,9 @@ class Time {
 
         bool operator>=(const Time& other) const;
 
+        // METHODS 
+        unsigned long long toSeconds() const;
+
         // CONSTRUCTORS
         Time(); 
         Time(const string& time_str);

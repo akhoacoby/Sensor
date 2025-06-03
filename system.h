@@ -13,13 +13,28 @@
 //--------------------------------------------------- Interfaces utilisées
 #include <vector>
 #include <string>
+#include <cmath>
+#include <numeric>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <ostream>
+//#include <chrono>
 
 #include "Cleaner.h"
-#include "Measurement.h"
 #include "User.h"
+#include "Time.h"
 #include "Sensor.h"
-//------------------------------------------------------------- Constantes
+#include "Csvfile.h"
+#include "Measurement.h"
 
+using namespace std;
+
+//------------------------------------------------------------- Constantes
+// Seuils pour annalyse
+const double maxIrregularRatio = 0.2;
+const double minVariance = 0.1;
+const double maxVariance = 100.0;
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
@@ -31,6 +46,7 @@
 class System
 {
 //----------------------------------------------------------------- PUBLIC
+friend ostream& operator<<(ostream& os, const System& s);
 
 public:
 //----------------------------------------------------- Méthodes publiques
@@ -45,13 +61,17 @@ public:
 
     double calculateMeanInArea (double lat, double lon, double rad, const std::string & start, const std::string & end, std::string attributeId );
 
-    double pearsonCorrelation(const vector<double>& x, const vector<double>& y);
+    double pearsonCorrelation(const vector<double>& x, const vector<double>& y) const;
 
-    std::vector<pair<Sensor,int>> rankSimilarSensors(const std::string & sensorId, const std::string & start, const std::string & end, const std::string & timestamp, std::string attributeId);
+    vector<pair<Sensor, double>> rankSimilarSensors(const string& sensorId, const string& start, const string& end, string attributeId);
 
     double computeDistance(double lat1, double lon1, double lat2, double lon2);
 
-    bool evaluateSensorReliability(const std::string & sensorId);
+    bool evaluateSensorReliability(const string& sensorId, double radius, const string& start, const string& end);
+
+    vector<Measurement> getMeasurementsForSensor(const string& sensorId) const;
+
+    //User getUserbyUsername(const string& userId) const;
 
 //-------------------------------------------- Constructeurs - destructeur
     System ( );
@@ -81,4 +101,3 @@ protected:
 //-------------------------------- Autres définitions dépendantes de <System>
 
 #endif // System_H
-

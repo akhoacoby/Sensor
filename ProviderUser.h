@@ -19,7 +19,7 @@
 //------------------------------------------------------------------------
 // Rôle de la classe <ProviderUser>
 //      Classe qui permet de construire, cloner et afficher Les ProviderUser (utilisateurs des agences qui donnent les air cleaner)
-//------------------------------------------------------------------------ 
+//------------------------------------------------------------------------
 
 class ProviderUser : public User
 {
@@ -34,6 +34,7 @@ public:
     // Mode d'emploi :
     //      verifie si le mot de passe donné en entrée correspond au mot de passe. renvoie 0 si ils correspondent, 1 sinon.
 
+    string getTrans() const override;
 
 //-------------------------------------------- Constructeurs - destructeur
 

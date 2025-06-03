@@ -37,6 +37,10 @@ int GovernmentUser::Verify_pw(string mdp)
     }
 }//----- Fin de Verify_pw
 
+string GovernmentUser::getTrans() const {
+    return "Government";
+}
+
 
 //-------------------------------------------- Constructeurs - destructeur
 
@@ -54,7 +58,7 @@ GovernmentUser ::GovernmentUser  (string Id, string Password, string FirstName, 
     #ifdef MAP
         cout << "Appel au constructeur de <GovernmentUser >" << endl;
     #endif
-} //----- Fin de GovernmentUser 
+} //----- Fin de GovernmentUser
 
 GovernmentUser ::GovernmentUser  (string Password, string FirstName, string LastName, string Mail)
 {
@@ -70,7 +74,7 @@ GovernmentUser ::GovernmentUser  (string Password, string FirstName, string Last
     #ifdef MAP
         cout << "Appel au constructeur de <GovernmentUser >" << endl;
     #endif
-} //----- Fin de GovernmentUser 
+} //----- Fin de GovernmentUser
 
 
 

@@ -10,20 +10,21 @@
 #ifndef MEASUREMENT_H
 #define MEASUREMENT_H
 
-// SYSTEM INCLUDES 
+// SYSTEM INCLUDES
 #include <iostream>
 #include <string>
 #include <sstream>
 using namespace std;
 
 // PERSONNAL INCLUDES
-#include "attribute.h"
-#include "time.h"
+#include "Attribute.h"
+#include "Time.h"
 
 class Measurement {
     friend ostream& operator<<(ostream& os, const Measurement m);
-    
+
     public:
+
         // GETTERS
         string getAttribute_id() const;
         string getSensor_id() const;
@@ -36,10 +37,10 @@ class Measurement {
         void setValue(double value);
         void setTimeStamp(Time timeStamp);
 
-        // CONSTRUCTORS 
+        // CONSTRUCTORS
         Measurement();
         Measurement(const string& measurement_str);
-        // DESTRUCTOR 
+        // DESTRUCTOR
         virtual ~Measurement();
 
     private:

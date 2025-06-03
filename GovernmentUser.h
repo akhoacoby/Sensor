@@ -19,7 +19,7 @@
 //------------------------------------------------------------------------
 // Rôle de la classe <GovernmentUser>
 //      Classe qui permet de construire, cloner et afficher Les GovernmentUser (utilisateurs de l'agence gouvernementale)
-//------------------------------------------------------------------------ 
+//------------------------------------------------------------------------
 
 class GovernmentUser : public User
 {
@@ -30,20 +30,17 @@ public:
     virtual void Afficher (void) const;
     // Mode d'emploi :
     //      Affiche le nom, le prénom et le mail du GovernmentUser
-    
+
     int Verify_pw(string mdp);
     // Mode d'emploi :
     //      verifie si le mot de passe donné en entrée correspond au mot de passe. renvoie 0 si ils correspondent, 1 sinon.
 
-    virtual User* clone() const;
-    
+    string getTrans() const override;
 
 //-------------------------------------------- Constructeurs - destructeur
-     
+
     GovernmentUser (string Id, string Password, string FirstName, string LastName, string Mail);
     GovernmentUser (string Password, string FirstName, string LastName, string Mail);
-    // Mode d'emploi :
-    //      Utilisé dans la méthode clone
 
 
 

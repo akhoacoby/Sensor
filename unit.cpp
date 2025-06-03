@@ -7,7 +7,7 @@
 *************************************************************************/
 
 //---------- Class <Unit> realization (file Unit.cpp) ------------
-#include "unit.h"
+#include "Unit.h"
 
 Unit stringToUnit(const string& unit_str){
     if (unit_str == "µg/m3" || unit_str == "ug/m3"){
@@ -21,11 +21,11 @@ Unit stringToUnit(const string& unit_str){
 
 string unitToString(Unit unit) {
     switch (unit) {
-        case Unit::UG_PER_M3: 
+        case Unit::UG_PER_M3:
             return "µg/m³";
-        case Unit::MG_PER_M3: 
+        case Unit::MG_PER_M3:
             return "mg/m³";
-        default: 
+        default:
             return "none";
     }
 }

@@ -30,25 +30,38 @@ using namespace std;
 std::string Cleaner::getCleanerId() const { return cleanerId; }
 
 //-------------------------------------------- Constructeurs - destructeur
-Cleaner::Cleaner ( const Cleaner & unCleaner )
-// Algorithme :
-//
+Cleaner::Cleaner ( )
 {
+    cleanerId = "";
+    latitude = 0;
+    longitude = 0;
+    startTime = Time();
+    stopTime = Time();
+
 #ifdef MAP
-    cout << "Appel au constructeur de copie de <Cleaner>" << endl;
+    cout << "Appel au constructeur de <Cleaner>" << endl;
 #endif
-} //----- Fin de Cleaner (constructeur de copie)
+} //----- Fin de Cleaner 
 
 
-Cleaner::Cleaner (std::string cleanerId, double latitude, double longitude, std::string startTime, std::string stopTime)
+Cleaner::Cleaner (const string& cleaner_str)
 // Algorithme :
 //
 {
-    this->cleanerId = cleanerId;
-    this->latitude = latitude;
-    this->longitude = longitude;
-    this->startTime = startTime;
-    this->stopTime = stopTime;
+    stringstream ss(cleaner_str);
+    string token;
+
+    getline(ss, token, ';');
+    cleanerId = token;
+    getline(ss, token, ';');
+    latitude = stod(token);
+    getline(ss, token, ';');
+    longitude = stod(token);
+    getline(ss, token, ';');
+    startTime = Time(token);  
+    getline(ss, token, ';');
+    stopTime = Time(token);
+
 #ifdef MAP
     cout << "Appel au constructeur de <Cleaner>" << endl;
 #endif

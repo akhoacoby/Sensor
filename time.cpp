@@ -8,7 +8,7 @@
 
 //---------- Class <Time> realization (file Time.cpp) ------------
 
-#include "time.h"
+#include "Time.h"
 
 
     bool Time::operator==(const Time& other) const {
@@ -20,7 +20,7 @@
                second == other.second;
     }
 
-    
+
     bool Time::operator<(const Time& other) const {
         if (year != other.year) return year < other.year;
         if (month != other.month) return month < other.month;
@@ -30,7 +30,7 @@
         return second < other.second;
     }
 
-   
+
     bool Time::operator<=(const Time& other) const {
         return (*this < other) || (*this == other);
     }
@@ -66,6 +66,19 @@ Time::Time(const string& time_str) {
 
 
 Time::~Time() {}
+
+unsigned long long Time::toSeconds() const {
+    unsigned long long totalSeconds = 0;
+    totalSeconds += static_cast<unsigned long long>(year) * 365 * 86400ULL;
+    totalSeconds += static_cast<unsigned long long>(month) * 30 * 86400ULL;
+    totalSeconds += static_cast<unsigned long long>(day) * 86400ULL;
+    totalSeconds += static_cast<unsigned long long>(hour) * 3600ULL;
+    totalSeconds += static_cast<unsigned long long>(minute) * 60ULL;
+    totalSeconds += second;
+
+    return totalSeconds;
+}
+
 
 // GETTERS
 unsigned int Time::getDay() const { return day; }

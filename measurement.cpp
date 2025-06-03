@@ -1,5 +1,5 @@
 /*************************************************************************
-                                Measurement 
+                                Measurement
                              -------------------
     beginning            : 2025
     copyright            : (C) 2025 by BACHET, LEBRE, BAHDA, BUI and BAGINSKI
@@ -7,7 +7,7 @@
 *************************************************************************/
 
 //---------- Class <Measurement> realization (file Measurement.cpp) ------------
-#include "measurement.h"
+#include "Measurement.h"
 
 // CONSTRUCTORS
 Measurement::Measurement(){
@@ -38,6 +38,7 @@ Measurement::Measurement(const string& str){
 
 Measurement::~Measurement() {
 }
+
 
 // GETTERS
 
@@ -75,7 +76,7 @@ void Measurement::setTimeStamp(Time timeStamp) {
     this->timeStamp = timeStamp;
 }
 
-// << OVERRIDE
+// << OVERLOAD
 ostream& operator<<(ostream& os, const Measurement m) {
     os << "Time : " << m.timeStamp << " | Sensor : " << m.sensor_id << " | Attribute : " << m.attribute_id << " | Value : " << m.value << endl;
     return os;

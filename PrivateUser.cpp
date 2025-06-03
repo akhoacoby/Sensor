@@ -38,6 +38,9 @@ void PrivateUser ::setScore(int nouveau)
     score=nouveau;
 } //----- Fin de setScore
 
+string PrivateUser::getTrans() const {
+    return "Private";
+}
 
 //-------------------------------------------- Constructeurs - destructeur
 
@@ -48,14 +51,14 @@ PrivateUser ::PrivateUser  (string Id, string Password, string FirstName, string
     firstName=FirstName;
     lastName=LastName;
     mail=Mail;
-    
+
     score=0;
     typeUser = 3;
 
     #ifdef MAP
         cout << "Appel au constructeur de <PrivateUser >" << endl;
     #endif
-} //----- Fin de PrivateUser 
+} //----- Fin de PrivateUser
 
 PrivateUser ::PrivateUser  (string Password, string FirstName, string LastName, string Mail)
 {
@@ -70,7 +73,7 @@ PrivateUser ::PrivateUser  (string Password, string FirstName, string LastName, 
     #ifdef MAP
         cout << "Appel au constructeur de <PrivateUser >" << endl;
     #endif
-} //----- Fin de PrivateUser 
+} //----- Fin de PrivateUser
 
 
 void PrivateUser::ChangerScore(int add)
@@ -80,4 +83,3 @@ void PrivateUser::ChangerScore(int add)
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
-

@@ -10,14 +10,14 @@
 #ifndef ATTRIBUTE_H
 #define ATTRIBUTE_H
 
-// SYSTEM INCLUDES 
+// SYSTEM INCLUDES
 #include <iostream>
 #include <string>
 #include <sstream>
 using namespace std;
 
 // PERSONNAL INCLUDES
-#include "unit.h"
+#include "Unit.h"
 
 class Attribute {
     friend ostream& operator<<(ostream& os, const Attribute a);
@@ -33,12 +33,12 @@ class Attribute {
         void setDescription(string description);
         void setUnit(Unit unit);
 
-        // CONSTRUCTORS 
+        // CONSTRUCTORS
         Attribute();
         Attribute(const string& attribute_str);
-        // DESTRUCTOR 
+        // DESTRUCTOR
         virtual ~Attribute();
-        
+
     private:
         // PRIVATE ATTRIBUTES
 		Unit unit;

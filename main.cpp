@@ -26,7 +26,7 @@ int main(){
      int type;
      cout << "Are you a provider ? y/n" << endl;
      cin >> type_str;
-     if (type_str == "y" or type_str == "yes"){
+     if (type_str == "y" || type_str == "yes"){
        type = 2;
      }
      else{
@@ -186,20 +186,8 @@ int main(){
                   connexion = false;
                   break;
                 }
-                case 7: {
-                  // Ouvre la documentation HTML dans le navigateur
-                  #ifdef _WIN32
-                      system("start user_manual/manual.html");
-                  #elif __APPLE__
-                      system("open user_manual/manual.html");
-                  #else
-                      system("xdg-open user_manual/manual.html");
-                  #endif
-                  break;
-              }
-
                 default:{
-                    cout << "Invalid choice. Please enter a number between 1 and 7." << endl;
+                    cout << "Invalid choice. Please enter a number between 1 and 5." << endl;
                     break;
             }
           }

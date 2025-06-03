@@ -12,6 +12,7 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
+#include <sstream>
 #include "Time.h"
 //------------------------------------------------------------- Constantes
 
@@ -43,7 +44,7 @@ std::string getCleanerId() const;
     // Contrat :
     //
 
-    Cleaner (std::string cleanerId, double latitude, double longtitude, std::string startTime, std::string stopTime);
+    Cleaner (const string& cleaner_str);
     // Mode d'emploi :
     //
     // Contrat :
@@ -59,11 +60,11 @@ std::string getCleanerId() const;
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    std::string cleanerId;
+    string cleanerId;
     double latitude;
     double longitude;
-    std::string startTime;
-    std::string stopTime;
+    Time startTime;
+    Time stopTime;
 //----------------------------------------------------- Attributs protégés
 
 };
@@ -71,4 +72,3 @@ protected:
 //-------------------------------- Autres définitions dépendantes de <Cleaner>
 
 #endif // Cleaner_H
-

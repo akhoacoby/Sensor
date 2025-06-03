@@ -4,8 +4,8 @@
  */
 
 #include "Sensor.h"
-#include "measurement.h"
-#include "time.h"
+#include "Measurement.h"
+#include "Time.h"
 #include <sstream>
 #include <iostream>
 
@@ -16,7 +16,7 @@ Sensor::Sensor() {
 }
 
 Sensor::Sensor(const string& sensor_str) {
-     
+
      stringstream ss(sensor_str);
      string token;
 
@@ -25,7 +25,7 @@ Sensor::Sensor(const string& sensor_str) {
 
      getline(ss,token,';');
      latitude = stod(token);
-     getline(ss,token,';');     
+     getline(ss,token,';');
      longitude = stod(token);
 
 }
@@ -60,7 +60,7 @@ pair<double, double> Sensor::get_coord_gps()
   return make_pair(latitude,longitude);
 }
 
-vector<Measurement> Sensor::get_measurements(vector<Measurement> list_measurement, Time debut)
+vector<Measurement> Sensor::get_measurements(const vector<Measurement>& list_measurement, const Time& debut) const
 {
     vector<Measurement> result;
 
@@ -80,21 +80,7 @@ vector<Measurement> Sensor::get_measurements(vector<Measurement> list_measuremen
     return result;
 }
 
-int main() {
-    Time debut("2019-01-01 12:00:00");
-
-    Measurement m1("2019-01-01 12:00:00;Sensor0;NO2;74.5;");
-    Measurement m2("2019-01-02 12:00:00;Sensor0;PM10;50.5;");
-    Measurement m3("2018-12-31 23:59:59;Sensor0;O3;12.3;");
-
-    vector<Measurement> all_measurements = {m1, m2, m3};
-
-    Sensor s("Sensor0;44;-1;");
-    auto results = s.get_measurements(all_measurements, debut);
-
-    for (const Measurement& m : results) {
-        std::cout << m << std::endl; // assuming toString() method
-    }
-
-    return 0;
-}
+ostream& operator<<(ostream& os, const Sensor s) {
+    os << "Id : " << s.sensorID << " | Latitude : " << s.latitude << " | Longitude : " << s.longitude <<  endl;
+    return os;
+};

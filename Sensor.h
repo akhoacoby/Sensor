@@ -12,18 +12,20 @@
 #include <vector>
 #include <utility>
 
-#include "measurement.h"
+#include "Measurement.h"
 #include "Time.h"
 using namespace std;
 
 class Sensor {
+  friend ostream& operator<<(ostream& os, const Sensor s);
+
 private:
     string sensorID;
     double latitude;
     double longitude;
 
 public:
-    
+
     string get_sensorID() const;
     double get_lat() const;
     double get_long() const;
@@ -33,12 +35,13 @@ public:
     void setLongitude(double new_long);
 
     pair<double, double> get_coord_gps();
-    vector<Measurement> get_measurements(vector<Measurement> list_measurement, Time debut);
+    vector<Measurement> get_measurements(const vector<Measurement>& list_measurement, const Time& debut) const;
+
 
     //Constructor
     Sensor();
     Sensor(const string& sensor_str);
-    
+
     //Destructor
     virtual ~Sensor();
 };
