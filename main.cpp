@@ -189,11 +189,11 @@ int main(){
                 case 7: {
                   // Ouvre la documentation HTML dans le navigateur
                   #ifdef _WIN32
-                      system("start manual.html");
+                      system("start user_manual/manual.html");
                   #elif __APPLE__
-                      system("open manual.html");
+                      system("open user_manual/manual.html");
                   #else
-                      system("xdg-open manual.html");
+                      system("xdg-open user_manual/manual.html");
                   #endif
                   break;
               }
