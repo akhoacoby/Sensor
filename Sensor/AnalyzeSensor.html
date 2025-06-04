@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analyze Sensor</title>
+</head>
+<body>
+    <h1>Analyze Sensor</h1>
+    <p><strong>Function:</strong> <code>bool analyzeSensor(const std::string& sensorId)</code></p>
+
+    <h2>Description</h2>
+    <p>Determines if a sensor is reliable based on:</p>
+    <ul>
+        <li><strong>Temporal regularity</strong>: checks for consistent measurement intervals (~1 min).</li>
+        <li><strong>Value variance</strong>: ensures readings are neither too constant nor too erratic.</li>
+    </ul>
+
+    <h2>Parameters</h2>
+    <ul>
+        <li><code>sensorId</code>: ID of the sensor to analyze (e.g., <code>"S1"</code>).</li>
+    </ul>
+
+    <h2>Auxiliary Functions Used</h2>
+    <ul>
+        <li>Inline computation of variance and interval checking.</li>
+    </ul>
+
+    <h2>Thresholds Used</h2>
+    <ul>
+        <li><code>maxIrregularRatio = 0.2</code>: Max allowed proportion of irregular intervals.</li>
+        <li><code>minVariance = 0.1</code>, <code>maxVariance = 100.0</code>: Value variance bounds.</li>
+    </ul>
+
+    <p><a href="manual.html">⬅ Back to the user manual</a></p>
+</body>
+</html>
