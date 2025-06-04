@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Evaluate Sensor Reliability</title>
+</head>
+<body>
+    <h1>Evaluate Sensor Reliability</h1>
+    <p><strong>Function:</strong> <code>bool evaluateSensorReliability(sensorId, radius, start, end)</code></p>
+
+    <h2>Description</h2>
+    <p>Checks if a sensor behaves consistently compared to nearby sensors over a given time period.</p>
+
+    <h2>Parameters</h2>
+    <ul>
+        <li><code>sensorId</code>: ID of the sensor to evaluate.</li>
+        <li><code>radius</code>: Radius (in km) within which to consider neighboring sensors.</li>
+        <li><code>start</code>, <code>end</code>: Date range in <code>YYYY-MM-DD hh:mm:ss</code>.</li>
+    </ul>
+
+    <h2>Auxiliary Functions Used</h2>
+    <ul>
+        <li><code>computeDistance(lat1, lon1, lat2, lon2)</code>: Euclidean approximation × 111 km.</li>
+        <li><code>accumulate()</code> and <code>sqrt()</code> for mean and standard deviation.</li>
+    </ul>
+
+    <h2>Logic</h2>
+    <ul>
+        <li>Compare mean value of the sensor to neighbor averages for each pollutant.</li>
+        <li>If the value deviates more than <code>2 × stdDev</code>, it's flagged unreliable.</li>
+    </ul>
+
+    <p><a href="manual.html">⬅ Back to the user manual</a></p>
+</body>
+</html>
