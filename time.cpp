@@ -82,36 +82,37 @@ unsigned long long Time::toSeconds() const {
     return totalSeconds;
 }
 
-#include <ctime>     // for std::tm, std::mktime
-#include <iomanip>   // for std::setfill, std::setw
+Time Time::addHours(int hoursToAdd) const {
+    Time result = *this;
+    result.hour += hoursToAdd;
 
-Time Time::addHours(int hours) const
-{
-    std::tm t = {};
-    t.tm_year = year - 1900;  // tm_year is years since 1900
-    t.tm_mon  = month - 1;    // tm_mon is 0-based
-    t.tm_mday = day;
-    t.tm_hour = hour;
-    t.tm_min  = minute;
-    t.tm_sec  = second;
-
-    std::time_t time_epoch = std::mktime(&t); // normalize
-    if (time_epoch == -1)
-    {
-        return *this;
+    // Gérer le dépassement des heures
+    while (result.hour >= 24) {
+        result.hour -= 24;
+        result.day += 1;
     }
 
-    time_epoch += hours * 3600;  // Add hours
+    // Gérer le dépassement des jours selon le mois
+    unsigned int daysInMonth[12] = { 31, 28, 31, 30, 31, 30,
+                            31, 31, 30, 31, 30, 31 };
 
-    std::tm* new_tm = std::localtime(&time_epoch);
+    // Année bissextile ?
+    bool isLeap = (result.year % 4 == 0 && (result.year % 100 != 0 || result.year % 400 == 0));
+    if (isLeap) daysInMonth[1] = 29;
 
-    Time result;
-    result.setYear(new_tm->tm_year + 1900);
-    result.setMonth(new_tm->tm_mon + 1);
-    result.setDay(new_tm->tm_mday);
-    result.setHour(new_tm->tm_hour);
-    result.setMinute(new_tm->tm_min);
-    result.setSecond(new_tm->tm_sec);
+    while (result.day > daysInMonth[result.month - 1]) {
+        result.day -= daysInMonth[result.month - 1];
+        result.month += 1;
+
+        if (result.month > 12) {
+            result.month = 1;
+            result.year += 1;
+
+            // recalculer année bissextile
+            isLeap = (result.year % 4 == 0 && (result.year % 100 != 0 || result.year % 400 == 0));
+            daysInMonth[1] = isLeap ? 29 : 28;
+        }
+    }
 
     return result;
 }

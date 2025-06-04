@@ -73,7 +73,7 @@ int main(){
         cin >> password;
 
         cout << "Username: " << username << "\nPassword: " << password << endl; // TEST
-        User* to_log = system_manager.getUserByUsername(username);
+        //User* to_log = system_manager.getUserByUsername(username);
         // bool connexion = to_log.Verify_pw(password);
         bool connexion = true; //en attendant
         if (connexion){
@@ -172,6 +172,7 @@ int main(){
 
                     string attributeId;
                     cout << "Enter attribute ID (e.g., O3, NO2, SO2, PM10): ";
+                    cin.ignore();
                     getline(cin, attributeId);
 
                     double improvement = system_manager.calculateCleanerEfficiency(cleanerId, radius, attributeId);

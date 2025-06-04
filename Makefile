@@ -3,19 +3,20 @@ TARGET = main
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -I.
 
-SRCS = Main.cpp \
-       Time.cpp \
-       Unit.cpp \
-       Attribute.cpp \
-       Measurement.cpp \
-       Csvfile.cpp \
+SRCS = main.cpp \
+       time.cpp \
+       unit.cpp \
+       attribute.cpp \
+       measurement.cpp \
+       csvfile.cpp \
        GovernmentUser.cpp \
        PrivateUser.cpp \
        ProviderUser.cpp \
        User.cpp \
        Cleaner.cpp \
        Sensor.cpp \
-       System.cpp
+       system.cpp \
+       Admin.cpp
 
 
 OBJS = $(SRCS:.cpp=.o)
