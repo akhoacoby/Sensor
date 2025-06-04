@@ -159,8 +159,24 @@ int main(){
 
                   break;
                 }
-                case 4:{ // TO DO
-                    // cout << pearsonCorrelation(x,y) << endl;
+                case 4:{
+                    cout << "Calculate air quality improvement due to a cleaner." << endl;
+
+                    string cleanerId;
+                    cout << "Enter Cleaner ID: ";
+                    cin >> cleanerId;
+
+                    double radius;
+                    cout << "Enter radius (km): ";
+                    cin >> radius;
+
+                    string attributeId;
+                    cout << "Enter attribute ID (e.g., O3, NO2, SO2, PM10): ";
+                    getline(cin, attributeId);
+
+                    double improvement = system_manager.calculateCleanerEfficiency(cleanerId, radius, attributeId);
+
+                    cout << "Estimated air quality improvement (reduction in " << attributeId << "): " << improvement << endl;
                     break;}
 
                 case 5:{

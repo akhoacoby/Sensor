@@ -35,8 +35,11 @@
         return (*this < other) || (*this == other);
     }
 
-
     bool Time::operator>=(const Time& other) const {
+        return !(*this < other) || (*this == other);
+    }
+
+    bool Time::operator>(const Time& other) const {
         return !(*this < other);
     }
 
@@ -77,6 +80,40 @@ unsigned long long Time::toSeconds() const {
     totalSeconds += second;
 
     return totalSeconds;
+}
+
+#include <ctime>     // for std::tm, std::mktime
+#include <iomanip>   // for std::setfill, std::setw
+
+Time Time::addHours(int hours) const
+{
+    std::tm t = {};
+    t.tm_year = year - 1900;  // tm_year is years since 1900
+    t.tm_mon  = month - 1;    // tm_mon is 0-based
+    t.tm_mday = day;
+    t.tm_hour = hour;
+    t.tm_min  = minute;
+    t.tm_sec  = second;
+
+    std::time_t time_epoch = std::mktime(&t); // normalize
+    if (time_epoch == -1)
+    {
+        return *this;
+    }
+
+    time_epoch += hours * 3600;  // Add hours
+
+    std::tm* new_tm = std::localtime(&time_epoch);
+
+    Time result;
+    result.setYear(new_tm->tm_year + 1900);
+    result.setMonth(new_tm->tm_mon + 1);
+    result.setDay(new_tm->tm_mday);
+    result.setHour(new_tm->tm_hour);
+    result.setMinute(new_tm->tm_min);
+    result.setSecond(new_tm->tm_sec);
+
+    return result;
 }
 
 

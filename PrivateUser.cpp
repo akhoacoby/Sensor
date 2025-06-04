@@ -38,6 +38,16 @@ void PrivateUser ::setScore(int nouveau)
     score=nouveau;
 } //----- Fin de setScore
 
+int PrivateUser::Verify_pw(const string& mdp)
+{
+    if (mdp==password){
+        return 0;
+    }
+    else{
+        return 1;
+    }
+}//----- Fin de Verify_pw
+
 string PrivateUser::getTrans() const {
     return "Private";
 }

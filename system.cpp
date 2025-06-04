@@ -54,7 +54,7 @@ bool System::addUser(std::unique_ptr<User> user) {
 
     file << user->getId() << "," << user->getPassword() << "\n";
     file.close();
-    list_users.push_back(user); // Also keep it in memory
+    list_users.push_back(move(user)); // Also keep it in memory
     return true;
 }
 
@@ -141,6 +141,94 @@ const std::string & end,std::string attributeId)
 }
 
 
+double haversine(double lat1, double lon1, double lat2, double lon2)
+{
+    const double R = 6371.0; // Earth radius in km
+    double dLat = (lat2 - lat1) * M_PI / 180.0;
+    double dLon = (lon2 - lon1) * M_PI / 180.0;
+    double a = sin(dLat / 2) * sin(dLat / 2) +
+               cos(lat1 * M_PI / 180.0) * cos(lat2 * M_PI / 180.0) *
+               sin(dLon / 2) * sin(dLon / 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    return R * c;
+}
+
+double System::calculateCleanerEfficiency(
+    const string& cleanerID,
+    double radius,
+    const string& attributeID
+) {
+    // Étape 1 : retrouver le cleaner
+    Cleaner* cleaner = nullptr;
+    for (auto& c : list_cleaners) {
+        if (c.getCleanerId() == cleanerID) {
+            cleaner = &c;
+            break;
+        }
+    }
+
+    if (!cleaner) {
+        cerr << "[ERREUR] Cleaner non trouvé: " << cleanerID << endl;
+        return -1.0;
+    }
+
+    double lat = cleaner->getCleanerLat();
+    double lon = cleaner->getCleanerLong();
+    Time start = cleaner->getCleanerStartTime();
+    Time stop = cleaner->getCleanerStopTime();
+
+    // Étape 2 : chercher les capteurs proches du cleaner
+    vector<string> nearbySensorIDs;
+    for (const auto& sensor : list_sensors) {
+        double d = haversine(lat, lon, sensor.get_lat(), sensor.get_long());
+        if (d <= radius) {
+            nearbySensorIDs.push_back(sensor.get_sensorID());
+        }
+    }
+
+    if (nearbySensorIDs.empty()) {
+        cerr << "[INFO] Aucun capteur dans le rayon specifie.\n";
+        return -1.0;
+    }
+
+    // Étape 3 : calculer la moyenne avant et après la période du cleaner
+    // On prend, par exemple, 2h avant et 2h après
+    Time startBefore = start.addHours(-2); // à écrire
+    Time stopAfter = stop.addHours(2);     // à écrire
+
+    double sumBefore = 0.0, sumAfter = 0.0;
+    int countBefore = 0, countAfter = 0;
+
+    for (const auto& m : list_measurements) {
+        if (m.getAttribute_id() != attributeID) continue;
+        if (find(nearbySensorIDs.begin(), nearbySensorIDs.end(), m.getSensor_id()) == nearbySensorIDs.end()) continue;
+
+        Time t = m.getTimeStamp();
+
+        if (t >= startBefore && t < start) {
+            sumBefore += m.getValue();
+            countBefore++;
+        } else if (t > stop && t <= stopAfter) {
+            sumAfter += m.getValue();
+            countAfter++;
+        }
+    }
+
+    if (countBefore == 0 || countAfter == 0) {
+        cerr << "[INFO] Données insuffisantes pour calculer l'efficacité.\n";
+        return -1.0;
+    }
+
+    double meanBefore = sumBefore / countBefore;
+    double meanAfter = sumAfter / countAfter;
+
+    // Efficacité = réduction relative (exprimée en pourcentage)
+    double efficiency = 100.0 * (meanBefore - meanAfter) / meanBefore;
+
+    return efficiency;
+}
+
+
 double System::pearsonCorrelation(const vector<double>& x, const vector<double>& y) const{
     if (x.size() != y.size() || x.empty()) return 0.0;
 
@@ -163,7 +251,6 @@ double System::pearsonCorrelation(const vector<double>& x, const vector<double>&
 
     return numerator / sqrt(denomX * denomY);
 }
-
 
 vector<pair<Sensor, double>> System::rankSimilarSensors(const string& sensorId, const string& start, const string& end, string attributeId) {
     Time tStart(start);

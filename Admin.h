@@ -35,7 +35,8 @@ public:
     // Mode d'emploi :
     //      verifie si le mot de passe donné en entrée correspond au mot de passe. renvoie 0 si ils correspondent, 1 sinon.
 
-    virtual User* clone() const ;
+    string getTrans() const override;
+    // virtual User* clone() const ;
 
 //-------------------------------------------- Constructeurs - destructeur
 

@@ -14,6 +14,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <memory>
 using namespace std;
 //--------------------------------------------------- Interfaces utilisées
 
@@ -35,7 +36,7 @@ public:
 //----------------------------------------------------- Méthodes publiques
     virtual void Afficher () const = 0;
     virtual string getTrans () const = 0;
-    virtual int Verify_pw(const string& mdp);
+    virtual int Verify_pw(const string& mdp) = 0;
 
 
     int getType () const;
@@ -54,14 +55,14 @@ public:
 
 
 //-------------------------------------------- Constructeurs - destructeur
-
+    User ();
     virtual ~User ( );
 
 //------------------------------------------------------------------ PRIVE
 
 protected:
 
-User ();
+
     // Mode d'emploi :
     //      Constructeur protégé car classe abstraite
 

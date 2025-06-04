@@ -30,10 +30,13 @@ class Time {
         // Overload operator<= using operator< and operator==
         bool operator<=(const Time& other) const;
 
+        bool operator>(const Time& other) const;
         bool operator>=(const Time& other) const;
 
         // METHODS 
         unsigned long long toSeconds() const;
+        Time addHours(int hours) const;
+
 
         // CONSTRUCTORS
         Time(); 

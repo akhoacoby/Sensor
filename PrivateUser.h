@@ -32,6 +32,8 @@ public:
     // Mode d'emploi :
     //      Affiche le nom, le prénom et le mail du PrivateUser
 
+    int Verify_pw(const string& mdp) override;
+
     virtual int getScore(void) const;
     virtual void setScore(int nouveau);
     void ChangerScore(int add);

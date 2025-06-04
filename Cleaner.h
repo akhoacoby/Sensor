@@ -35,7 +35,11 @@ public:
     //
     // Contrat :
     //
-std::string getCleanerId() const;
+    std::string getCleanerId() const;
+    double getCleanerLat() const;
+    double getCleanerLong() const;
+    Time getCleanerStartTime() const;
+    Time getCleanerStopTime() const;
 
 //-------------------------------------------- Constructeurs - destructeur
     Cleaner ( );

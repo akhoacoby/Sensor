@@ -28,7 +28,7 @@ void GovernmentUser ::Afficher(void) const
 } //----- Fin de Afficher
 
 int GovernmentUser::Verify_pw(const string& mdp)
-{
+{   
     if (mdp==password){
         return 0;
     }

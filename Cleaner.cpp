@@ -28,6 +28,10 @@ using namespace std;
 //{
 //} //----- Fin de Méthode
 std::string Cleaner::getCleanerId() const { return cleanerId; }
+double Cleaner::getCleanerLat() const { return latitude; }
+double Cleaner::getCleanerLong() const { return longitude; }
+Time Cleaner::getCleanerStartTime() const { return startTime; }
+Time Cleaner::getCleanerStopTime() const { return stopTime; }
 
 //-------------------------------------------- Constructeurs - destructeur
 Cleaner::Cleaner ( )

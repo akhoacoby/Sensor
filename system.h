@@ -19,6 +19,7 @@
 #include <map>
 #include <set>
 #include <ostream>
+#include <memory>
 //#include <chrono>
 
 #include "Cleaner.h"
@@ -35,6 +36,10 @@ using namespace std;
 const double maxIrregularRatio = 0.2;
 const double minVariance = 0.1;
 const double maxVariance = 100.0;
+#ifndef M_PI
+#define M_PI 3.14
+#endif
+
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
@@ -62,6 +67,8 @@ public:
     bool analyzeSensor(const std::string & sensorId);
 
     double calculateMeanInArea (double lat, double lon, double rad, const std::string & start, const std::string & end, std::string attributeId );
+
+    double calculateCleanerEfficiency(const string& cleanerID, double radius, const string& attributeID);
 
     double pearsonCorrelation(const vector<double>& x, const vector<double>& y) const;
 

@@ -39,6 +39,11 @@ int Admin::Verify_pw(const string& mdp)
     }
 }//----- Fin de Verify_pw
 
+string Admin::getTrans() const
+{
+    return "Admin";
+}
+
 
 //-------------------------------------------- Constructeurs - destructeur
 
